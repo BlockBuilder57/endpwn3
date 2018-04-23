@@ -18,7 +18,7 @@
 (() => {
 
     // abort if we're not currently in the discord app
-    if (location.hostname.indexOf('discordapp') != -1) return;
+    if (location.hostname.indexOf('discordapp') == -1) return;
 
     // use the discord native api to require electron and get electron.remote
     var electron = DiscordNative.nativeModules.requireModule('discord_/../electron').remote;

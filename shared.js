@@ -81,8 +81,7 @@
         // disable that obnoxious warning about not pasting shit in the console
         $api.util.findFuncExports('consoleWarning').consoleWarning = e => { };
 
-        // goodies for people directly associated with the endpwn project, and also kat bc shes my girlfriend
-        // may be expanded to anyone through a web ui later on
+        // apply custom discrims/bot tags from EndPwn Customizer (endpwn.cathoderay.tube)
         $api.util.wrapAfter(
             "wc.findCache('getUser')[0].exports.getUser",
 

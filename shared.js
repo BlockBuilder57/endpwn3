@@ -75,6 +75,9 @@
 
         window.reload = () => { app.relaunch(); app.exit(); };
 
+        // disable analytics
+        $api.util.findFuncExports("AnalyticEventConfigs").default.track = () => {};
+
         // enable experiments
         $api.util.findFuncExports('isDeveloper').__defineGetter__('isDeveloper', () => true);
 

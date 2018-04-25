@@ -112,7 +112,7 @@
         );
 
         // check for epapi updates
-        if (!fs.existsSync($api.data + '/DONTUPDATE'))
+        if ($api.lite || !fs.existsSync($api.data + '/DONTUPDATE'))
             (function () {
 
                 // fetch the latest build of epapi

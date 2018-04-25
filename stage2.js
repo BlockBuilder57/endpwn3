@@ -35,6 +35,9 @@
     // load EPAPI
     var epapi = __krequire('epapi.js');
 
+    // add window.reload()
+    window.reload = () => { app.relaunch(); app.exit(); };
+
     // call the entrypoint
     epapi.go('bootsyhax-dr1ft', 0, 1);
 

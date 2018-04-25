@@ -73,8 +73,6 @@
     // post-init payload
     document.addEventListener('ep-ready', () => {
 
-        window.reload = () => { app.relaunch(); app.exit(); };
-
         // disable analytics
         $api.util.findFuncExports("AnalyticEventConfigs").default.track = () => {};
 
@@ -134,8 +132,7 @@
                             onConfirm: () => {
 
                                 // refresh the page if we're running in a browser, reboot the app if we're running outside of lite mode
-                                if ($api.lite) location.reload();
-                                else reload();
+                                reload();
 
                             },
 

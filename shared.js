@@ -111,45 +111,46 @@
         );
 
         // check for epapi updates
-        (function () {
-            
-            // fetch the latest build of epapi
-            fetch('https://endpwn.github.io/epapi/epapi.js?_=' + Date.now()).then(x => x.text()).then(x => {
+        if (!fs.existsSync($api.data + '/DONTUPDATE'))
+            (function () {
 
-                // check the version
-                if (kparse(x).version > $api.version) {
+                // fetch the latest build of epapi
+                fetch('https://endpwn.github.io/epapi/epapi.js?_=' + Date.now()).then(x => x.text()).then(x => {
 
-                    // if the version on the server is newer, pester the user
-                    $api.ui.showDialog({
+                    // check the version
+                    if (kparse(x).version > $api.version) {
 
-                        title: 'EndPwn3: EPAPI Update Available',
-                        body: 'An update to EPAPI has been released. It is recommended that you restart your client in order to gain access to new features and maintain compatibility.',
-                        confirmText: 'Restart Now', cancelText: 'Later',
+                        // if the version on the server is newer, pester the user
+                        $api.ui.showDialog({
 
-                        // user pressed "Restart Now"
-                        onConfirm: () => {
+                            title: 'EndPwn3: EPAPI Update Available',
+                            body: 'An update to EPAPI has been released. It is recommended that you restart your client in order to gain access to new features and maintain compatibility.',
+                            confirmText: 'Restart Now', cancelText: 'Later',
 
-                            // refresh the page if we're running in a browser, reboot the app if we're running outside of lite mode
-                            if ($api.lite) location.reload();
-                            else reload();
+                            // user pressed "Restart Now"
+                            onConfirm: () => {
 
-                        },
+                                // refresh the page if we're running in a browser, reboot the app if we're running outside of lite mode
+                                if ($api.lite) location.reload();
+                                else reload();
 
-                        // they pressed "Later", for some reason
-                        onCancel: () => {
+                            },
 
-                            // bother them again in 6 hrs (* 60 min * 60 sec * 1000 ms)
-                            setTimeout(arguments.callee, 6 * 60 * 60 * 1000);
+                            // they pressed "Later", for some reason
+                            onCancel: () => {
 
-                        }
+                                // bother them again in 6 hrs (* 60 min * 60 sec * 1000 ms)
+                                setTimeout(arguments.callee, 6 * 60 * 60 * 1000);
 
-                    });
+                            }
 
-                }
+                        });
 
-            });
+                    }
 
-        })();
+                });
+
+            })();
 
     });
 

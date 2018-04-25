@@ -111,7 +111,7 @@
         );
 
         // check for epapi updates
-        /*(function () {
+        (function () {
             
             // fetch the latest build of epapi
             fetch('https://endpwn.github.io/epapi/epapi.js?_=' + Date.now()).then(x => x.text()).then(x => {
@@ -149,7 +149,7 @@
 
             });
 
-        })();*/
+        })();
 
     });
 

@@ -115,6 +115,8 @@
         if ($api.lite || !fs.existsSync($api.data + '/DONTUPDATE'))
             (function () {
 
+                console.log(`%c[EndPwn]%c checking for EPAPI updates...`, 'font-weight:bold;color:#0cc', '');
+
                 // fetch the latest build of epapi
                 fetch('https://endpwn.github.io/epapi/epapi.js?_=' + Date.now()).then(x => x.text()).then(x => {
 

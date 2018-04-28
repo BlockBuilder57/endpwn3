@@ -75,7 +75,7 @@
 
         // hijack the crash handler
         // TODO: make this less ugly
-        $api.util.findFuncExports('CRASH', 'prototype').prototype.render = function () {
+        /*$api.util.findFuncExports('CRASH', 'prototype').prototype.render = function () {
 
             console.error('*** DISCORD CRASH!!! ***\nLOCKING DISPATCH AND HIJACKING PAGE');
 
@@ -106,7 +106,7 @@ Details may be available in the console (Ctrl+Shift+I), but at this level of cra
             // crash whatever was calling render()
             throw 'render abort';
 
-        }
+        }*/
 
         // disable analytics
         $api.util.findFuncExports("AnalyticEventConfigs").default.track = () => { };

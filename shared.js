@@ -50,7 +50,8 @@ function __epprint(str) {
         var sentry = wc.findCache('_originalConsoleMethods')[0].exports;
         window.console = Object.assign(window.console, sentry._originalConsoleMethods); // console
         sentry._wrappedBuiltIns.forEach(x => x[0][x[1]] = x[2]); // other stuff
-        sentry._breadcrumbEventHandler = () => () => { }; // disable event logging
+        sentry._breadcrumbEventHandler = () => () => { }; // break most event logging
+        sentry.captureBreadcrumb = () => { }; // disable breadcrumb logging
 
         // fetch the changelog
         __epprint('injecting changelog...');

@@ -37,6 +37,10 @@
     // early init payload
     document.addEventListener('ep-prepared', () => {
 
+        // restore the original console methods
+        var origConsole = wc.findCache('_originalConsoleMethods')[0].exports._originalConsoleMethods;
+        Object.keys(origConsole).forEach(x => global.console[x] = origConsole[x]);
+
         // fetch the changelog
         fetch('https://endpwn.github.io/changelog.md?_=' + Date.now()).then(r => r.text()).then(l => {
 
@@ -72,10 +76,6 @@
 
     // post-init payload
     document.addEventListener('ep-ready', () => {
-
-        // restore the original console methods
-        var origConsole = wc.findCache('_originalConsoleMethods')[0].exports._originalConsoleMethods;
-        Object.keys(origConsole).forEach(x => global.console[x] = origConsole[x]);
 
         // disable analytics
         $api.util.findFuncExports("AnalyticEventConfigs").default.track = () => { };

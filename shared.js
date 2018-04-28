@@ -37,9 +37,10 @@
     // early init payload
     document.addEventListener('ep-prepared', () => {
 
-        // restore the original console methods
-        var origConsole = wc.findCache('_originalConsoleMethods')[0].exports._originalConsoleMethods;
-        Object.keys(origConsole).forEach(x => global.console[x] = origConsole[x]);
+        // restore original native methods
+        var sentry = wc.findCache('_originalConsoleMethods')[0].exports;
+        window.console = Object.assign(window.console, sentry._originalConsoleMethods); // console
+        sentry._wrappedBuiltIns.forEach(x => x[0][x[1]] = x[2]); // other stuff
 
         // fetch the changelog
         fetch('https://endpwn.github.io/changelog.md?_=' + Date.now()).then(r => r.text()).then(l => {

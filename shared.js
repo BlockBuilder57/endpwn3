@@ -73,41 +73,6 @@
     // post-init payload
     document.addEventListener('ep-ready', () => {
 
-        // hijack the crash handler
-        // TODO: make this less ugly
-        /*$api.util.findFuncExports('CRASH', 'prototype').prototype.render = function () {
-
-            console.error('*** DISCORD CRASH!!! ***\nLOCKING DISPATCH AND HIJACKING PAGE');
-
-            // disable dispatch(), essentially freezing react
-            $api.internal.dispatcher.default.dispatch = () => { };
-
-            // clear css
-            $("link[rel='stylesheet']").remove();
-            $$("style").forEach(x => x.remove());
-
-            // add a simple style to the body
-            $('body').style.color = '#fff';
-            $('body').style.backgroundColor = '#000082';
-            $('body').style.fontFamily = 'monospace';
-
-            // write our message to app-mount
-            $('#app-mount').innerHTML = `<h1>EndPwn: Discord Fatal Error</h1>
-<h3>
-Something has gone very, very wrong, and Discord has crashed.<br><br>
-If this is the first time you've seen this error screen, reload and hope for the best. If this screen appears again, follow these steps:<br><br>
-Try removing any new plugins and restarting again. If this solves the problem there may be a bug in a plugin.<br><br>
-If problems continue, it's likely that there is a bug in EndPwn or Discord. <a href="https://discord.gg/wXdPNf2" target="_blank" style="color:#0ff">Join the EndPwn Discord server</a> for assistance.<br><br>
-Details may be available in the console (Ctrl+Shift+I), but at this level of crash we can't be certain.
-</h3>
-<button onclick="electron.getCurrentWindow().reload()">Reload</button>
-<button onclick="$api.localStorage.set('safemode',1);electron.getCurrentWindow().reload()">Reload in safe mode</button>`;
-
-            // crash whatever was calling render()
-            throw 'render abort';
-
-        }*/
-
         // disable analytics
         $api.util.findFuncExports("AnalyticEventConfigs").default.track = () => { };
 

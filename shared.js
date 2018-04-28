@@ -14,6 +14,10 @@
 
 */
 
+function __epprint(str) {
+    console.log(`%c[EndPwn]%c ` + str, 'font-weight:bold;color:#0cc', '');
+}
+
 (() => {
 
     // define this with a default value as a fallback
@@ -37,12 +41,18 @@
     // early init payload
     document.addEventListener('ep-prepared', () => {
 
+        // disable that obnoxious warning about not pasting shit in the console
+        __epprint('disabling self xss warning...');
+        $api.util.findFuncExports('consoleWarning').consoleWarning = e => { };
+
         // restore original native methods
+        __epprint('unfucking natives methods...');
         var sentry = wc.findCache('_originalConsoleMethods')[0].exports;
         window.console = Object.assign(window.console, sentry._originalConsoleMethods); // console
         sentry._wrappedBuiltIns.forEach(x => x[0][x[1]] = x[2]); // other stuff
 
         // fetch the changelog
+        __epprint('injecting changelog...');
         fetch('https://endpwn.github.io/changelog.md?_=' + Date.now()).then(r => r.text()).then(l => {
 
             // we're racing discord's initialization procedures; try and hit a timing sweetspot
@@ -79,13 +89,12 @@
     document.addEventListener('ep-ready', () => {
 
         // disable analytics
+        __epprint('disabling analytics...');
         $api.util.findFuncExports("AnalyticEventConfigs").default.track = () => { };
 
         // enable experiments
+        __epprint('enabling experiments menu...');
         $api.util.findFuncExports('isDeveloper').__defineGetter__('isDeveloper', () => true);
-
-        // disable that obnoxious warning about not pasting shit in the console
-        $api.util.findFuncExports('consoleWarning').consoleWarning = e => { };
 
         // apply custom discrims/bot tags from EndPwn Customizer (endpwn.cathoderay.tube)
         $api.util.wrapAfter(
@@ -120,7 +129,7 @@
         if ($api.lite || !fs.existsSync($api.data + '/DONTUPDATE'))
             (function () {
 
-                console.log(`%c[EndPwn]%c checking for EPAPI updates...`, 'font-weight:bold;color:#0cc', '');
+                __epprint('checking for EPAPI updates...');
 
                 // fetch the latest build of epapi
                 fetch('https://endpwn.github.io/epapi/epapi.js?_=' + Date.now()).then(x => x.text()).then(x => {

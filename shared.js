@@ -95,8 +95,8 @@
             $('#app-mount').innerHTML = `<h1>EndPwn: Discord Fatal Error</h1>
 <h3>
 Something has gone very, very wrong, and Discord has crashed.<br><br>
-If this is the first time you've seen this error screen, press Ctrl+R and hope for the best. If this screen appears again, follow these steps:<br><br>
-Try removing any new plugins and restarting again. If this solves the problem there may be a bug in the plugin.<br><br>
+If this is the first time you've seen this error screen, reload and hope for the best. If this screen appears again, follow these steps:<br><br>
+Try removing any new plugins and restarting again. If this solves the problem there may be a bug in a plugin.<br><br>
 If problems continue, it's likely that there is a bug in EndPwn or Discord. <a href="https://discord.gg/wXdPNf2" target="_blank" style="color:#0ff">Join the EndPwn Discord server</a> for assistance.<br><br>
 Details may be available in the console (Ctrl+Shift+I), but at this level of crash we can't be certain.
 </h3>

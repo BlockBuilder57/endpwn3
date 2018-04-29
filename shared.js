@@ -165,6 +165,7 @@ function __epprint(str) {
                         });
 
                     }
+                    else setTimeout(arguments.callee, 6 * 60 * 60 * 1000);
 
                 });
 

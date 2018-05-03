@@ -40,13 +40,18 @@
                         win.webContents.executeJavaScript(stage2);
                     });
 
-                    function load() {
-                        var branch = require('path').basename(electron.app.getPath("userData")).substr(7);
-                        win.loadURL('https://' + (branch ? branch + '.' : '') + 'discordapp.com/channels/@me');
-                    }
-
                     // get the data path
                     var data = electron.app.getPath('userData');
+
+                    function load() {
+                        var branch = require('path').basename(data).substr(7);
+                        var preload = '';
+                        if (fs.existsSync(data + '/preload.js')) {
+                            preload = fs.readFileSync(data + '/preload.js').toString();
+                        }
+                        win.loadURL('https://' + (branch ? branch + '.' : '') + 'discordapp.com/channels/@me');
+                        win.webContents.executeJavaScript(preload);
+                    }
 
                     // dont update EPAPI if DONTUPDATE exists
                     if (!fs.existsSync(data + '/DONTUPDATE')) {

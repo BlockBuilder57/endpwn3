@@ -25,11 +25,11 @@
     var fs = electron.require('original-fs');
 
     // get the data path (where epapi.js should be)
-    var data = electron.app.getPath('userData').replace(/\\\\/g, "/") + '/';
+    var ___data = electron.app.getPath('userData').replace(/\\\\/g, "/") + '/';
 
     // shakily reimplemented of require() intended for loading plugins and EPAPI itself
     function __krequire(path) {
-        return eval('(()=>{var exports={};' + fs.readFileSync(data + path, 'utf8').toString() + ';return exports})()');
+        return eval('(()=>{var exports={};' + fs.readFileSync(___data + path, 'utf8').toString() + ';return exports})()');
     }
 
     // load EPAPI

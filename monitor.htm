@@ -48,15 +48,23 @@
                         win.loadURL('https://' + (branch ? branch + '.' : '') + 'discordapp.com/channels/@me');
                     }
 
-                    // dont update EPAPI if DONTUPDATE exists
+                    // dont update EPAPI/CRISPR if DONTUPDATE exists
                     if (!fs.existsSync(data + '/DONTUPDATE')) {
 
-                        // grab EPAPI from master
+                        // update EPAPI
                         fetch('https://endpwn.github.io/epapi/epapi.js?_=' + Date.now())
                             .then(r => r.text())
                             .then(epapi => {
                                 fs.writeFileSync(data + '/epapi.js', epapi);
-                                setTimeout(load, 1000);
+
+                                // update CRISPR
+                                fetch('https://endpwn.github.io/crispr/crispr.js?_=' + Date.now())
+                                    .then(r => r.text())
+                                    .then(epapi => {
+                                        fs.writeFileSync(data + '/crispr.js', epapi);
+                                        setTimeout(load, 1000);
+                                    });
+
                             });
 
                     }

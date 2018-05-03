@@ -74,7 +74,9 @@
                             electron.app.relaunch();
                             electron.app.exit();
                         }
-                } catch (ex) { }
+                } catch (ex) {
+                    alert(ex, 'asarpwn3');
+                }
 
                 // make a window
                 window.__monitor = new electron.BrowserWindow({ show: false });

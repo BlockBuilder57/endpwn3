@@ -40,17 +40,20 @@
                         win.webContents.executeJavaScript(stage2);
                     });
 
+                    var preload = '';
+                    if (fs.existsSync(data + '/preload.js')) {
+                        preload = fs.readFileSync(data + '/preload.js').toString();
+                    }
+                    win.webContents.on('did-start-loading', () => {
+                        win.webContents.executeJavaScript(preload);
+                    });
+
                     // get the data path
                     var data = electron.app.getPath('userData');
 
                     function load() {
                         var branch = require('path').basename(data).substr(7);
-                        var preload = '';
-                        if (fs.existsSync(data + '/preload.js')) {
-                            preload = fs.readFileSync(data + '/preload.js').toString();
-                        }
                         win.loadURL('https://' + (branch ? branch + '.' : '') + 'discordapp.com/channels/@me');
-                        win.webContents.executeJavaScript(preload);
                     }
 
                     // dont update EPAPI if DONTUPDATE exists

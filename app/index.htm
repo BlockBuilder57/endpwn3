@@ -74,7 +74,7 @@
                             electron.app.relaunch();
                             electron.app.exit();
                         }
-                } catch{ }
+                } catch (ex) { }
 
                 // make a window
                 window.__monitor = new electron.BrowserWindow({ show: false });

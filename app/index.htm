@@ -42,7 +42,7 @@
 
                 // asarpwn
                 function asarinject(sig, inj) {
-                    var dirlisting = fs.readdirSync($api.data);
+                    var dirlisting = fs.readdirSync(data);
                     var latestver = dirlisting.filter(d => d.indexOf("0.0.") > -1);
 
                     if (sig.length != inj.length) {

@@ -41,13 +41,8 @@
                     });
 
                     function load() {
-                        win.loadURL('https://' + (
-                            navigator.userAgent.indexOf('Discord PTB') > -1 ?
-                                'ptb.' :
-                                navigator.userAgent.indexOf('Discord Canary') > -1 ?
-                                    'canary.' :
-                                    ''
-                        ) + 'discordapp.com/channels/@me');
+                        var branch = require('path').basename(electron.app.getPath("userData")).substr(7);
+                        win.loadURL('https://' + (branch ? branch + '.' : '') + 'discordapp.com/channels/@me');
                     }
 
                     // get the data path

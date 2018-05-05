@@ -41,4 +41,51 @@
     // call the entrypoint
     epapi.go('bootsyhax-dr1ft', 0, 1);
 
+    window.endpwn = {
+        uninstall: function () {
+            $api.ui.showDialog({
+                title: 'EndPwn: confirm uninstallation',
+                body: 'Are you sure you want to remove EndPwn from your client? You can reinstall it at any time.',
+                confirmText: 'Yes', cancelText: 'No',
+
+                onConfirm: () => {
+
+                    var data = $api.data;
+                    const Buffer = require('buffer').Buffer;
+
+                    // asarpwn
+                    function asarinject(sig, inj) {
+                        var dirlisting = fs.readdirSync(data);
+                        var latestver = dirlisting.filter(d => d.indexOf("0.0.") > -1);
+
+                        if (sig.length != inj.length) {
+                            throw 'signature and injection not same size'
+                        }
+                        var bdata = new Buffer(fs.readFileSync(`${data}/${latestver[latestver.length - 1]}/modules/discord_desktop_core/core.asar`));
+                        var index = bdata.indexOf(sig);
+                        if (index == -1) {
+                            return 0;
+                        }
+                        bdata.write(inj, index);
+                        fs.writeFileSync(`${data}/${latestver[latestver.length - 1]}/modules/discord_desktop_core/core.asar`, bdata);
+                        return 1;
+                    }
+
+                    asarinject(
+                        "var electron=require('electron');var d=electron.remote.app.getPath('userData')+'/crispr.js';if(require('fs').existsSync(d))require(d).go();//",
+                        "// App preload script, used to provide a replacement native API now that\n// we turned off node integration.\nvar electron = require('electron'"
+                    );
+
+                    $api.settings.set('WEBAPP_ENDPOINT');
+                    $api.settings.set('WEBAPP_PATH');
+
+                    reload();
+
+                },
+                onCancel: () => console.log('<3')
+
+            });
+        }
+    };
+
 })();

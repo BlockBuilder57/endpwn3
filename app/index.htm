@@ -59,7 +59,7 @@
                 }
 
                 // install endpwn 
-                var o = JSON.parse(fs.readFileSync(data + '/settings.json', 'utf8'));   // load settings.json
+                var o = fs.existsSync(data + '/settings.json') ? JSON.parse(fs.readFileSync(data + '/settings.json', 'utf8')) : {};   // load settings.json
                 o['WEBAPP_ENDPOINT'] = 'https://endpwn.github.io/endpwn3';                      // aim the app at stage 0
                 o['WEBAPP_PATH'] = '/app?_=' + Date.now();                                      // cache busting
                 fs.writeFileSync(data + '/settings.json', JSON.stringify(o, null, 2));  // commit changes to disk

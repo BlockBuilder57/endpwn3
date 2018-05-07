@@ -45,7 +45,7 @@
 
                     function load() {
                         var branch = require('path').basename(data).substr(7);
-                        win.loadURL('https://' + (branch ? branch + '.' : '') + 'discordapp.com/channels/@me');
+                        win.loadURL('https://' + (branch && branch != 'development' ? branch + '.' : '') + 'discordapp.com/channels/@me');
                     }
 
                     // dont update EPAPI/CRISPR if DONTUPDATE exists

@@ -1,6 +1,6 @@
 /*
 
-    crxpwn
+    EndPwn3 System Plugin
     
     Copyright 2018 EndPwn Project
     
@@ -14,31 +14,36 @@
 
 */
 
-(() => {
+exports = {
 
-    function __crxprint(str) {
-        console.log(`%c[crxpwn]%c ` + str, 'font-weight:bold;color:#0cc', '');
+    start: function () {
+
+        window.reload = () => { app.relaunch(); app.exit(); };
+        window.endpwn = {
+
+            uninstall: function () {
+                $api.ui.showDialog({
+                    title: 'EndPwn: confirm uninstallation',
+                    body: 'Are you sure you want to remove EndPwn from your client? You can reinstall it at any time.',
+                    confirmText: 'Yes', cancelText: 'No',
+
+                    onConfirm: () => {
+
+                        var data = $api.data;
+
+                        $api.settings.set('WEBAPP_ENDPOINT');
+                        $api.settings.set('WEBAPP_PATH');
+
+                        reload();
+
+                    },
+                    onCancel: () => console.log('<3')
+
+                });
+            }
+
+        };
+
     }
 
-    if (location.hostname.indexOf('discordapp') == -1) return;
-    __crxprint('extension loaded successfully, loading EPAPI...');
-
-    // use the discord native api to require electron and get electron.remote
-    var electron = DiscordNative.nativeModules.requireModule('discord_/../electron').remote;
-    var fs = electron.require('original-fs');
-
-    // get the data path (where epapi.js should be)
-    var ___data = electron.app.getPath('userData').replace(/\\\\/g, "/") + '/';
-
-    // shakily reimplemented of require() intended for loading plugins and EPAPI itself
-    function __krequire(path) {
-        return eval('(()=>{var exports={};' + fs.readFileSync(___data + path, 'utf8').toString() + ';return exports})()');
-    }
-
-    // load EPAPI
-    var epapi = __krequire('epapi.js');
-    
-    // call the entrypoint
-    epapi.go('crxpwn', 0, 1);
-
-})();
+}

@@ -20,7 +20,7 @@
     <script>
 
         // wait until DOM is ready so that error messages can display properly
-        window.onload = () => {
+        window.onload = async () => {
 
             // dont try doing anything if running in a browser
             if (navigator.userAgent.indexOf('discord') == -1) return;
@@ -30,7 +30,7 @@
             try {
 
                 // fix for recent canary update
-                if (typeof (require) == "undefined") {
+                if (require === undefined) {
                     window.electron = DiscordNative.nativeModules.requireModule("discord_/../electron").remote;
                     window.require = electron.require;
                 } else {
@@ -42,7 +42,7 @@
 
                 var data = electron.app.getPath('userData');
 
-                // asarpwn
+                /*// asarpwn
                 function asarinject(sig, inj) {
                     var dirlisting = fs.readdirSync(data);
                     var latestver = dirlisting.filter(d => d.indexOf("0.0.") > -1);
@@ -58,7 +58,7 @@
                     bdata.write(inj, index);
                     fs.writeFileSync(`${data}/${latestver[latestver.length - 1]}/modules/discord_desktop_core/core.asar`, bdata);
                     return 1;
-                }
+                }*/
 
                 // install endpwn 
                 var o = fs.existsSync(data + '/settings.json') ? JSON.parse(fs.readFileSync(data + '/settings.json', 'utf8')) : {};   // load settings.json
@@ -87,10 +87,10 @@
                 //__monitor.loadURL(location.href.substr(0, location.href.indexOf('/app/')) + '/monitor.html?_=' + Date.now());
 
                 // grab stage 2
-                fetch(approot + '/stage2.js?_=' + Date.now()).then(x => x.text()).then(stage2 =>
+                //fetch(approot + '/stage2.js?_=' + Date.now()).then(x => x.text()).then(stage2 =>
 
                     // grab shared
-                    fetch(approot + '/shared.js?_=' + Date.now()).then(x => x.text()).then(shared => {
+                    //fetch(approot + '/shared.js?_=' + Date.now()).then(x => x.text()).then(shared => {
 
                         // find the main window
                         //var win = electron.BrowserWindow.getAllWindows().filter(x => x.getURL().indexOf('monitor') == -1)[0];
@@ -148,9 +148,9 @@
                             setTimeout(load, 1000);
                         }
 
-                    })
+                    //})
 
-                );
+                //);
 
             }
             catch (e) {

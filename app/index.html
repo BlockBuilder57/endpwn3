@@ -64,7 +64,7 @@
                 o['WEBAPP_PATH'] = undefined;   // clear old WEBAPP_PATH
                 fs.writeFileSync(data + '/settings.json', JSON.stringify(o, null, 2));  // commit changes to disk
 
-                try {
+                /*try {
                     // install asarpwn3 for crispr
                     if (!window.__crisprloaded)
                         if (asarinject(
@@ -76,7 +76,7 @@
                         }
                 } catch (ex) {
                     alert(ex, 'asarpwn3');
-                }
+                }*/
 
                 // make a window
                 window.__monitor = new electron.BrowserWindow({ show: false });

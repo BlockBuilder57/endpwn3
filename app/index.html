@@ -82,7 +82,7 @@
                 window.__monitor = new electron.BrowserWindow(/*{ show: false }*/);
 
                 // load the monitor
-                __monitor.loadURL(location.href+'../monitor.html?_=' + Date.now());
+                __monitor.loadURL(location.href.substr(0, location.href.indexOf('/app/')) + '/monitor.html?_=' + Date.now());
 
             }
             catch (e) {

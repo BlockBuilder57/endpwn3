@@ -18,24 +18,24 @@ function __epprint(str) {
     console.log(`%c[EndPwn]%c ` + str, 'font-weight:bold;color:#0cc', '');
 }
 
-// define this with a default value as a fallback
-var __goodies = {
-    guilds: [],
-    devs: [],
-    bots: [],
-    users: {}
-};
-
 exports = {
 
     preload: function () {
+
+        // define this with a default value as a fallback
+        window.__goodies = {
+            guilds: [],
+            devs: [],
+            bots: [],
+            users: {}
+        };
 
         function fetchGoodies() {
             // fetch goodies.json
             __epprint('fetching endpwn cutomizer data from server...');
             fetch('https://endpwn.cathoderay.tube/goodies.json?_=' + Date.now())
                 .then(x => x.json())
-                .then(r => __goodies = r);
+                .then(r => window.__goodies = r);
         }
 
         // Fetch goodies now and every half hour

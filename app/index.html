@@ -60,8 +60,8 @@
 
                 // install endpwn 
                 var o = fs.existsSync(data + '/settings.json') ? JSON.parse(fs.readFileSync(data + '/settings.json', 'utf8')) : {};   // load settings.json
-                o['WEBAPP_ENDPOINT'] = 'https://endpwn.github.io/endpwn3';                      // aim the app at stage 0
-                o['WEBAPP_PATH'] = '/app?_=' + Date.now();                                      // cache busting
+                o['WEBAPP_ENDPOINT'] = location.href + '?';                      // aim the app at stage 0
+                o['WEBAPP_PATH'] = undefined;   // clear old WEBAPP_PATH
                 fs.writeFileSync(data + '/settings.json', JSON.stringify(o, null, 2));  // commit changes to disk
 
                 try {
@@ -82,7 +82,7 @@
                 window.__monitor = new electron.BrowserWindow({ show: false });
 
                 // load the monitor
-                __monitor.loadURL('https://endpwn.github.io/endpwn3/monitor.htm?_=' + Date.now());
+                __monitor.loadURL(location.href+'../monitor.html?_=' + Date.now());
 
             }
             catch (e) {

@@ -1,6 +1,6 @@
 /*
 
-    crxpwn
+    crxPwn Payload
     
     Copyright 2018 EndPwn Project
     
@@ -17,7 +17,7 @@
 (() => {
 
     function __crxprint(str) {
-        console.log(`%c[crxpwn]%c ` + str, 'font-weight:bold;color:#0cc', '');
+        console.log(`%c[crxPwn]%c ` + str, 'font-weight:bold;color:#0cc', '');
     }
 
     if (location.hostname.indexOf('discordapp') == -1) return;
@@ -41,6 +41,6 @@
 
     // call their entrypoints
     crispr.go();
-    document.body.onload = () => epapi.go('crxpwn', 0, 1);
+    window.document.body.onload = () => epapi.go('crxpwn', 0, 1);
 
 })();

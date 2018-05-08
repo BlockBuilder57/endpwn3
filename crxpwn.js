@@ -41,6 +41,11 @@
 
     // call their entrypoints
     crispr.go();
-    electron.getCurrentWindow().webContents.on('dom-ready', () => epapi.go('crxpwn', 0, 1));
+    electron.getCurrentWindow().webContents.on('dom-ready', () => epapi.go({
+        name: 'EndPwn3',
+        version: '3.1',
+        method: 'crxpwn',
+        brand: true
+    }));
 
 })();

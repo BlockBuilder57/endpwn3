@@ -128,7 +128,7 @@
                             fs.writeFileSync(data + '/epapi.js', epapi);
 
                             var crispr = await (await fetch('https://endpwn.github.io/crispr/crispr.js?_=' + Date.now())).text();
-                            fs.writeFileSync(data + '/crispr.js', epapi);
+                            fs.writeFileSync(data + '/crispr.js', crispr);
 
                             var plugin = await (await fetch(approot + '/plugin.js?_=' + Date.now())).text();
                             fs.writeFileSync(data + '/plugins/system.js', plugin);

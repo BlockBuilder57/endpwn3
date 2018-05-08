@@ -43,7 +43,15 @@
     crispr.go();
     electron.getCurrentWindow().webContents.on('dom-ready', () => epapi.go({
         name: 'EndPwn3',
-        version: '3.1',
+        version: {
+            major: 3,
+            minor: 1,
+            revision: 0,
+
+            toString: function () {
+                return `v${this.major}.${this.minor}.${this.revision}`;
+            }
+        },
         method: 'crxpwn',
         brand: true
     }));

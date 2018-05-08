@@ -16,6 +16,11 @@
 
 exports = {
 
+    replacements: {
+        //'#([0-9]{4})': '#(.{1,4})',
+        //'return t.hasFlag(H.UserFlags.STAFF)': 'return t.hasFlag(4096)&&r.push({tooltip:"EndPwn Developer",onClick:function(){return window.open("https://endpwn.github.io/","_blank")},class:"endpwn"}),t.hasFlag(H.UserFlags.STAFF)'
+    },
+
     start: function () {
 
         window.reload = () => { app.relaunch(); app.exit(); };

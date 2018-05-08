@@ -164,6 +164,9 @@ exports = {
             }
         );
 
+        // make sure devs' badges actually render
+        $api.events.hook('USER_PROFILE_MODAL_FETCH_SUCCESS', x => { if (__goodies.devs.contains(x.user.id)) x.user.flags += x.user.flags & 4096 ? 0 : 4096; })
+
         // hook getGuild() so we can verify servers
         $api.util.wrapAfter(
             "wc.findCache('getGuild')[0].exports.getGuild",

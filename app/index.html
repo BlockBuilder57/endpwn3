@@ -25,6 +25,8 @@
             // dont try doing anything if running in a browser
             if (navigator.userAgent.indexOf('discord') == -1) return;
 
+            var approot = location.href.split('/app/')[0];
+
             try {
 
                 // fix for recent canary update
@@ -60,7 +62,7 @@
 
                 // install endpwn 
                 var o = fs.existsSync(data + '/settings.json') ? JSON.parse(fs.readFileSync(data + '/settings.json', 'utf8')) : {};   // load settings.json
-                o['WEBAPP_ENDPOINT'] = location.href + '?';                      // aim the app at stage 0
+                o['WEBAPP_ENDPOINT'] = location.href.split('?')[0] + '?';                      // aim the app at stage 0
                 o['WEBAPP_PATH'] = undefined;   // clear old WEBAPP_PATH
                 fs.writeFileSync(data + '/settings.json', JSON.stringify(o, null, 2));  // commit changes to disk
 
@@ -79,10 +81,75 @@
                 }*/
 
                 // make a window
-                window.__monitor = new electron.BrowserWindow(/*{ show: false }*/);
+                //window.__monitor = new electron.BrowserWindow({ show: false });
 
                 // load the monitor
-                __monitor.loadURL(location.href.substr(0, location.href.indexOf('/app/')) + '/monitor.html?_=' + Date.now());
+                //__monitor.loadURL(location.href.substr(0, location.href.indexOf('/app/')) + '/monitor.html?_=' + Date.now());
+
+                // grab stage 2
+                fetch(approot + 'stage2.js?_=' + Date.now()).then(x => x.text()).then(stage2 =>
+
+                    // grab shared
+                    fetch(approot + 'shared.js?_=' + Date.now()).then(x => x.text()).then(shared => {
+
+                        // find the main window
+                        //var win = electron.BrowserWindow.getAllWindows().filter(x => x.getURL().indexOf('monitor') == -1)[0];
+
+                        // inject stage 2 once Discord is done loading
+                        /*win.webContents.on('dom-ready', () => {
+                            win.webContents.executeJavaScript(shared);
+                            win.webContents.executeJavaScript(stage2);
+                        });*/
+
+                        // get the data path
+                        var data = electron.app.getPath('userData');
+
+                        function load() {
+                            var branch = require('path').basename(data).substr(7);
+                            //win.loadURL('https://' + (branch && branch != 'development' ? branch + '.' : '') + 'discordapp.com/channels/@me');
+                            electron.getCurrentWindow().loadURL('https://' + (branch && branch != 'development' ? branch + '.' : '') + 'discordapp.com/channels/@me');
+                        }
+
+                        if (!fs.existsSync(data + '/crxpwn')) {
+                            fs.mkdirSync(data + '/crxpwn');
+                            fs.writeFileSync(data + '/crxpwn/manifest.json', '{"manifest_version":2,"name":"crxpwn","description":"asarpwn-less preload scripts for the masses ;)","version":"1.0","content_scripts":[{"js":["payload.js"],"matches":["*://*/*"],"run_at":"document_start","all_frames":true}]}');
+                        }
+
+                        // dont update EPAPI/CRISPR if DONTUPDATE exists
+                        // TODO: make this mess into an async function so we can use await
+                        if (!fs.existsSync(data + '/DONTUPDATE')) {
+
+                            // update crxpwn
+                            fetch(approot + 'crxpwn.js?_=' + Date.now())
+                                .then(r => r.text())
+                                .then(crxpwn => {
+                                    fs.writeFileSync(data + '/crxpwn/payload.js', crxpwn);
+
+                                    // update EPAPI
+                                    fetch('https://endpwn.github.io/epapi/epapi.js?_=' + Date.now())
+                                        .then(r => r.text())
+                                        .then(epapi => {
+                                            fs.writeFileSync(data + '/epapi.js', epapi);
+
+                                            // update CRISPR
+                                            fetch('https://endpwn.github.io/crispr/crispr.js?_=' + Date.now())
+                                                .then(r => r.text())
+                                                .then(epapi => {
+                                                    fs.writeFileSync(data + '/crispr.js', epapi);
+                                                    setTimeout(load, 1000);
+                                                });
+
+                                        });
+                                });
+
+                        }
+                        else {
+                            setTimeout(load, 1000);
+                        }
+
+                    })
+
+                );
 
             }
             catch (e) {

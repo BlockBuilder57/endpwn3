@@ -46,10 +46,9 @@
         version: {
             major: 3,
             minor: 1,
-            revision: 0,
 
             toString: function () {
-                return `v${this.major}.${this.minor}.${this.revision}`;
+                return `v${this.major}.${this.minor}`;
             }
         },
         method: 'crxpwn',

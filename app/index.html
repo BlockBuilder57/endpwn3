@@ -107,7 +107,7 @@
                         function load() {
                             var branch = require('path').basename(data).substr(7);
                             //win.loadURL('https://' + (branch && branch != 'development' ? branch + '.' : '') + 'discordapp.com/channels/@me');
-                            electron.BrowserWindow.addExtension(data + 'crxpwn');
+                            electron.BrowserWindow.addExtension(data + '/crxpwn');
                             electron.getCurrentWindow().loadURL('https://' + (branch && branch != 'development' ? branch + '.' : '') + 'discordapp.com/channels/@me');
                         }
 

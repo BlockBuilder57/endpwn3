@@ -21,7 +21,7 @@
     }
 
     if (location.hostname.indexOf('discordapp') == -1) return;
-    __crxprint('extension loaded successfully, loading EPAPI...');
+    __crxprint('extension loaded successfully, loading CRISPR and EPAPI...');
 
     // use the discord native api to require electron and get electron.remote
     var electron = DiscordNative.nativeModules.requireModule('discord_/../electron').remote;

@@ -103,6 +103,8 @@ exports = {
         window.reload = () => { app.relaunch(); app.exit(); };
         window.endpwn = {
 
+            __eval: e => eval(e),
+
             uninstall: function () {
                 $api.ui.showDialog({
                     title: 'EndPwn: confirm uninstallation',
@@ -135,7 +137,7 @@ exports = {
         $api.util.findFuncExports('isDeveloper').__defineGetter__('isDeveloper', () => true);
 
         // apply custom discrims/bot tags/badges/server verif from EndPwn Customizer (endpwn.cathoderay.tube)
-        __epprint('initializing endpwn cutomizer...');
+        __epprint('initializing EndPwn Cutomizer...');
 
         // add the endpwn dev badge to the class obfuscation table
         wc.findFunc('profileBadges:"profileBadges')[0].exports['profileBadgeEndpwn'] = 'profileBadgeEndPwn';

@@ -30,7 +30,7 @@
             try {
 
                 // fix for recent canary update
-                if (require === undefined) {
+                if (window.require === undefined) {
                     window.electron = DiscordNative.nativeModules.requireModule("discord_/../electron").remote;
                     window.require = electron.require;
                 } else {

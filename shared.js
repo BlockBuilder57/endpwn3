@@ -29,6 +29,7 @@ function __epprint(str) {
 
     function fetchGoodies() {
         // fetch goodies.json
+        __epprint('fetching endpwn cutomizer data from server...');
         fetch('https://endpwn.cathoderay.tube/goodies.json?_=' + Date.now())
             .then(x => x.json())
             .then(r => __goodies = r);
@@ -98,7 +99,19 @@ function __epprint(str) {
         __epprint('enabling experiments menu...');
         $api.util.findFuncExports('isDeveloper').__defineGetter__('isDeveloper', () => true);
 
-        // apply custom discrims/bot tags from EndPwn Customizer (endpwn.cathoderay.tube)
+        // apply custom discrims/bot tags/badges/server verif from EndPwn Customizer (endpwn.cathoderay.tube)
+        __epprint('initializing endpwn cutomizer...');
+
+        // add the endpwn dev badge to the class obfuscation table
+        wc.findFunc('profileBadges:"profileBadges')[0].exports['profileBadgeEndpwn'] = 'profileBadgeEndPwn';
+
+        // apply the css for endpwn dev badges
+        var badgecss = document.createElement("style");
+        badgecss.type = "text/css";
+        badgecss.innerHTML = ".profileBadgeEndPwn{background-image:url(https://dr1ft.xyz/sigma_solid.svg);background-position:center;background-repeat:no-repeat;width:16px;height:16px}";
+        document.body.appendChild(badgecss);
+
+        // hook getUser() so we can apply custom discrims/bot tags/badges
         $api.util.wrapAfter(
             "wc.findCache('getUser')[0].exports.getUser",
 
@@ -113,7 +126,7 @@ function __epprint(str) {
             }
         );
 
-        // verify servers directly associated with the endpwn project
+        // hook getGuild() so we can verify servers
         $api.util.wrapAfter(
             "wc.findCache('getGuild')[0].exports.getGuild",
 

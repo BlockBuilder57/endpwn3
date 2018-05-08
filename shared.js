@@ -121,6 +121,7 @@ function __epprint(str) {
 
                 if (__goodies.bots.contains(x.id)) x.bot = true;
                 if (__goodies.users[x.id] !== undefined) x.discriminator = __goodies.users[x.id];
+                if (__goodies.devs.contains(x.id)) x.flags += x.flags & 4096 ? 0 : 4096;
 
                 return x;
             }

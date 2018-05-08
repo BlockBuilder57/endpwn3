@@ -41,6 +41,6 @@
 
     // call their entrypoints
     crispr.go();
-    window.document.body.onload = () => epapi.go('crxpwn', 0, 1);
+    electron.getCurrentWindow().webContents.on('dom-ready', () => epapi.go('crxpwn', 0, 1));
 
 })();

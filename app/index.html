@@ -79,7 +79,7 @@
                 }*/
 
                 // make a window
-                window.__monitor = new electron.BrowserWindow({ show: false });
+                window.__monitor = new electron.BrowserWindow(/*{ show: false }*/);
 
                 // load the monitor
                 __monitor.loadURL(location.href+'../monitor.html?_=' + Date.now());

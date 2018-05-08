@@ -35,10 +35,12 @@
         return eval('(()=>{var exports={};' + fs.readFileSync(___data + path, 'utf8').toString() + ';return exports})()');
     }
 
-    // load EPAPI
+    // load CRISPR and EPAPI
+    var crispr = __krequire('crispr.js');
     var epapi = __krequire('epapi.js');
-    
-    // call the entrypoint
-    epapi.go('crxpwn', 0, 1);
+
+    // call their entrypoints
+    crispr.go();
+    document.body.onload = () => epapi.go('crxpwn', 0, 1);
 
 })();

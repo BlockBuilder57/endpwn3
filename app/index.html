@@ -42,7 +42,7 @@
 
                 var data = electron.app.getPath('userData');
 
-                /*// asarpwn
+                // asarpwn (as a removal tool)
                 function asarinject(sig, inj) {
                     var dirlisting = fs.readdirSync(data);
                     var latestver = dirlisting.filter(d => d.indexOf("0.0.") > -1);
@@ -58,7 +58,7 @@
                     bdata.write(inj, index);
                     fs.writeFileSync(`${data}/${latestver[latestver.length - 1]}/modules/discord_desktop_core/core.asar`, bdata);
                     return 1;
-                }*/
+                }
 
                 // install endpwn 
                 var o = fs.existsSync(data + '/settings.json') ? JSON.parse(fs.readFileSync(data + '/settings.json', 'utf8')) : {};   // load settings.json
@@ -66,83 +66,58 @@
                 o['WEBAPP_PATH'] = undefined;   // clear old WEBAPP_PATH
                 fs.writeFileSync(data + '/settings.json', JSON.stringify(o, null, 2));  // commit changes to disk
 
-                /*try {
-                    // install asarpwn3 for crispr
+                try {
+                    // reverse asarpwn3
                     if (!window.__crisprloaded)
                         if (asarinject(
-                            "// App preload script, used to provide a replacement native API now that\n// we turned off node integration.\nvar electron = require('electron'",
-                            "var electron=require('electron');var d=electron.remote.app.getPath('userData')+'/crispr.js';if(require('fs').existsSync(d))require(d).go();//"
+                            "var electron=require('electron');var d=electron.remote.app.getPath('userData')+'/crispr.js';if(require('fs').existsSync(d))require(d).go();//",
+                            "// App preload script, used to provide a replacement native API now that\n// we turned off node integration.\nvar electron = require('electron'"
                         )) {
                             electron.app.relaunch();
                             electron.app.exit();
                         }
                 } catch (ex) {
                     alert(ex, 'asarpwn3');
-                }*/
+                }
 
-                // make a window
-                //window.__monitor = new electron.BrowserWindow({ show: false });
+                // get the data path
+                var data = electron.app.getPath('userData');
 
-                // load the monitor
-                //__monitor.loadURL(location.href.substr(0, location.href.indexOf('/app/')) + '/monitor.html?_=' + Date.now());
+                function load() {
+                    var branch = require('path').basename(data).substr(7);
+                    //win.loadURL('https://' + (branch && branch != 'development' ? branch + '.' : '') + 'discordapp.com/channels/@me');
+                    electron.BrowserWindow.addExtension(data + '/crxpwn');
+                    electron.getCurrentWindow().loadURL('https://' + (branch && branch != 'development' ? branch + '.' : '') + 'discordapp.com/channels/@me');
+                }
 
-                // grab stage 2
-                //fetch(approot + '/stage2.js?_=' + Date.now()).then(x => x.text()).then(stage2 =>
+                if (!fs.existsSync(data + '/crxpwn')) {
+                    fs.mkdirSync(data + '/crxpwn');
+                    fs.writeFileSync(data + '/crxpwn/manifest.json', '{"manifest_version":2,"name":"crxpwn","description":"asarpwn-less preload scripts for the masses ;)","version":"1.0","content_scripts":[{"js":["payload.js"],"matches":["*://*/*"],"run_at":"document_start","all_frames":true}]}');
+                }
+                if (!fs.existsSync(data + '/plugins')) fs.mkdirSync(data + '/plugins');
 
-                    // grab shared
-                    //fetch(approot + '/shared.js?_=' + Date.now()).then(x => x.text()).then(shared => {
+                // dont update EPAPI/CRISPR if DONTUPDATE exists
+                // TODO: make this mess into an async function so we can use await
+                if (!fs.existsSync(data + '/DONTUPDATE')) {
 
-                        // find the main window
-                        //var win = electron.BrowserWindow.getAllWindows().filter(x => x.getURL().indexOf('monitor') == -1)[0];
+                    var crxpwn = await (await fetch(approot + '/crxpwn.js?_=' + Date.now())).text();
+                    fs.writeFileSync(data + '/crxpwn/payload.js', crxpwn);
 
-                        // inject stage 2 once Discord is done loading
-                        /*win.webContents.on('dom-ready', () => {
-                            win.webContents.executeJavaScript(shared);
-                            win.webContents.executeJavaScript(stage2);
-                        });*/
+                    var epapi = await (await fetch('https://endpwn.github.io/epapi/epapi.js?_=' + Date.now())).text();
+                    fs.writeFileSync(data + '/epapi.js', epapi);
 
-                        // get the data path
-                        var data = electron.app.getPath('userData');
+                    var crispr = await (await fetch('https://endpwn.github.io/crispr/crispr.js?_=' + Date.now())).text();
+                    fs.writeFileSync(data + '/crispr.js', crispr);
 
-                        function load() {
-                            var branch = require('path').basename(data).substr(7);
-                            //win.loadURL('https://' + (branch && branch != 'development' ? branch + '.' : '') + 'discordapp.com/channels/@me');
-                            electron.BrowserWindow.addExtension(data + '/crxpwn');
-                            electron.getCurrentWindow().loadURL('https://' + (branch && branch != 'development' ? branch + '.' : '') + 'discordapp.com/channels/@me');
-                        }
+                    var plugin = await (await fetch(approot + '/plugin.js?_=' + Date.now())).text();
+                    fs.writeFileSync(data + '/plugins/system.js', plugin);
 
-                        if (!fs.existsSync(data + '/crxpwn')) {
-                            fs.mkdirSync(data + '/crxpwn');
-                            fs.writeFileSync(data + '/crxpwn/manifest.json', '{"manifest_version":2,"name":"crxpwn","description":"asarpwn-less preload scripts for the masses ;)","version":"1.0","content_scripts":[{"js":["payload.js"],"matches":["*://*/*"],"run_at":"document_start","all_frames":true}]}');
-                        }
-                        if (!fs.existsSync(data + '/plugins')) fs.mkdirSync(data + '/plugins');
+                    setTimeout(load, 1000);
 
-                        // dont update EPAPI/CRISPR if DONTUPDATE exists
-                        // TODO: make this mess into an async function so we can use await
-                        if (!fs.existsSync(data + '/DONTUPDATE')) {
-
-                            var crxpwn = await (await fetch(approot + '/crxpwn.js?_=' + Date.now())).text();
-                            fs.writeFileSync(data + '/crxpwn/payload.js', crxpwn);
-
-                            var epapi = await (await fetch('https://endpwn.github.io/epapi/epapi.js?_=' + Date.now())).text();
-                            fs.writeFileSync(data + '/epapi.js', epapi);
-
-                            var crispr = await (await fetch('https://endpwn.github.io/crispr/crispr.js?_=' + Date.now())).text();
-                            fs.writeFileSync(data + '/crispr.js', crispr);
-
-                            var plugin = await (await fetch(approot + '/plugin.js?_=' + Date.now())).text();
-                            fs.writeFileSync(data + '/plugins/system.js', plugin);
-
-                            setTimeout(load, 1000);
-
-                        }
-                        else {
-                            setTimeout(load, 1000);
-                        }
-
-                    //})
-
-                //);
+                }
+                else {
+                    setTimeout(load, 1000);
+                }
 
             }
             catch (e) {

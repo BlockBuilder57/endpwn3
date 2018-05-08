@@ -18,16 +18,17 @@ function __epprint(str) {
     console.log(`%c[EndPwn]%c ` + str, 'font-weight:bold;color:#0cc', '');
 }
 
+// define this with a default value as a fallback
+var __goodies = {
+    guilds: [],
+    devs: [],
+    bots: [],
+    users: {}
+};
+
 exports = {
 
     preload: function () {
-
-        // define this with a default value as a fallback
-        var __goodies = {
-            guilds: [],
-            bots: [],
-            users: {}
-        };
 
         function fetchGoodies() {
             // fetch goodies.json

@@ -145,7 +145,7 @@ exports = {
         // apply the css for endpwn dev badges
         var badgecss = document.createElement("style");
         badgecss.type = "text/css";
-        badgecss.innerHTML = ".profileBadgeEndPwn{background-image:url(https://dr1ft.xyz/sigma_solid.svg);background-position:center;background-repeat:no-repeat;width:16px;height:16px}";
+        badgecss.innerHTML = ".profileBadgeEndPwn{background-image:url(https://dr1ft.xyz/sigma_solid.svg);background-position:center;background-repeat:no-repeat;width:16px;height:16px;cursor:pointer}";
         document.body.appendChild(badgecss);
 
         // hook getUser() so we can apply custom discrims/bot tags/badges

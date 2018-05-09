@@ -7,19 +7,45 @@
     <meta property="og:image" content="https://endpwn.github.io/sigma.png" />
 
     <script>
-        function updatePayload(){
-            document.querySelector('code').innerText=`DiscordNative.nativeModules.requireModule("discord_/../electron").remote.getCurrentWindow().loadURL('${location.href}app')`
+        function updatePayload() {
+            document.querySelector('code').innerText = `DiscordNative.nativeModules.requireModule("discord_/../electron").remote.getCurrentWindow().loadURL('${location.href}app')`
         }
     </script>
+
+    <style>
+        body {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translateX(-50%) translateY(-50%);
+            font-family: sans-serif;
+            text-align: center;
+            background-color: #2f3136;
+            color: #ffffff
+        }
+
+        a {
+            color: #0ff;
+        }
+
+        div {
+            background: linear-gradient(to bottom right, #0ff, #f0f);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 72px;
+        }
+    </style>
 </head>
 
-<body style="position:absolute;top:50%;left:50%;transform:translateX(-50%) translateY(-50%);font-family:sans-serif;text-align:center;background-color:#2f3136;color:#ffffff" onload="updatePayload()">
-    <div style="background:linear-gradient(to bottom right,#0ff,#f0f);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-size:72px;">&Sigma;ndPwn&sup3;</div>
+<body onload="updatePayload()">
+    <div>&Sigma;ndPwn&sup3;</div>
     Copy and paste the following string into your Discord console:
     <br>
     <code>please wait...</code>
     <br>
-    <br> Credit to bootsy for developing the ASAR-less code injection method (bootsyhax)
+    <br>
+    <b>This is the unstable, staging branch of EndPwn3. Use at your own risk or use the
+        <a href="https://endpwn.github.io/endpwn3/">stable branch</a> instead.</b>
 </body>
 
 </html>

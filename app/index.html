@@ -61,6 +61,7 @@
                 }
 
                 // install endpwn 
+
                 var o = fs.existsSync(data + '/settings.json') ? JSON.parse(fs.readFileSync(data + '/settings.json', 'utf8')) : {}; // load settings.json
                 o['WEBAPP_ENDPOINT'] = location.href.split('?')[0] + '?'; // aim the app at stage 0
                 o['WEBAPP_PATH'] = undefined; // clear old WEBAPP_PATH

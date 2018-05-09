@@ -1,6 +1,6 @@
 /*
 
-    EndPwn3 System Plugin
+    EndPwn3 System (script component)
     
     Copyright 2018 EndPwn Project
     

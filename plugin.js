@@ -14,38 +14,20 @@
 
 */
 
-function __epprint(str) {
-    console.log(`%c[EndPwn3]%c ` + str, 'font-weight:bold;color:#0cc', '');
+var internal = {
+
+    print: function (str) {
+        console.log(`%c[EndPwn3]%c ` + str, 'font-weight:bold;color:#0cc', '');
+    }
+
 }
 
 exports = {
 
     preload: function () {
 
-        // define this with a default value as a fallback
-        window.__goodies = {
-            guilds: [],
-            devs: [],
-            bots: [],
-            users: {}
-        };
-
-        function fetchGoodies() {
-            // fetch goodies.json
-            __epprint('fetching EndPwn Cutomizer data from server...');
-            fetch('https://endpwn.cathoderay.tube/goodies.json?_=' + Date.now())
-                .then(x => x.json())
-                .then(r => window.__goodies = r);
-        }
-
-        // Fetch goodies now and every half hour
-        fetchGoodies();
-        setInterval(fetchGoodies, 1800000);
-
         window.reload = () => { app.relaunch(); app.exit(); };
         window.endpwn = {
-
-            __eval: e => eval(e),
 
             uninstall: function () {
                 $api.ui.showDialog({
@@ -64,21 +46,47 @@ exports = {
 
                     },
                     onCancel: () => console.log('<3')
-
                 });
+            },
+
+            // define this with a default value as a fallback
+            customizer: {
+
+                data: {
+                    guilds: [],
+                    devs: [],
+                    bots: [],
+                    users: {}
+                },
+
+                update: function () {
+                    // fetch goodies.json
+                    internal.print('fetching EndPwn Cutomizer data from server...');
+                    fetch('https://endpwn.cathoderay.tube/goodies.json?_=' + Date.now())
+                        .then(x => x.json())
+                        .then(r => endpwn.customizer.data = r);
+                },
+
+                hook: function () {
+                    endpwn.customizer.hook = undefined;
+                }
+
             }
 
         };
+
+        // refetch customizer stuff every half hour
+        setInterval(endpwn.customizer.update, 1800000);
 
         // early init payload
         document.addEventListener('ep-prepared', () => {
 
             // disable that obnoxious warning about not pasting shit in the console
-            __epprint('disabling self xss warning...');
+            internal.print('disabling self xss warning...');
             $api.util.findFuncExports('consoleWarning').consoleWarning = e => { };
 
             // fuck sentry
-            __epprint('fucking sentry...');
+            internal.print('fucking sentry...');
             var sentry = wc.findCache('_originalConsoleMethods')[0].exports;
             window.console = Object.assign(window.console, sentry._originalConsoleMethods); // console
             sentry._wrappedBuiltIns.forEach(x => x[0][x[1]] = x[2]); // other stuff
@@ -86,7 +94,7 @@ exports = {
             sentry.captureBreadcrumb = () => { }; // disable breadcrumb logging
 
             // fetch the changelog
-            __epprint('injecting changelog...');
+            internal.print('injecting changelog...');
             fetch('https://endpwn.github.io/changelog.md?_=' + Date.now()).then(r => r.text()).then(l => {
 
                 // we're racing discord's initialization procedures; try and hit a timing sweetspot
@@ -129,15 +137,15 @@ exports = {
     start: function () {
 
         // disable analytics
-        __epprint('disabling analytics...');
+        internal.print('disabling analytics...');
         $api.util.findFuncExports("AnalyticEventConfigs").default.track = () => { };
 
         // enable experiments
-        __epprint('enabling experiments menu...');
+        internal.print('enabling experiments menu...');
         $api.util.findFuncExports('isDeveloper').__defineGetter__('isDeveloper', () => true);
 
         // apply custom discrims/bot tags/badges/server verif from EndPwn Customizer (endpwn.cathoderay.tube)
-        __epprint('initializing EndPwn Cutomizer...');
+        internal.print('initializing EndPwn Cutomizer...');
 
         // add the endpwn dev badge to the class obfuscation table
         wc.findFunc('profileBadges:"profileBadges')[0].exports['profileBadgeEndpwn'] = 'profileBadgeEndPwn';
@@ -156,16 +164,16 @@ exports = {
 
                 if (x === undefined || x === null) return;
 
-                if (__goodies.bots.contains(x.id)) x.bot = true;
-                if (__goodies.users[x.id] !== undefined) x.discriminator = __goodies.users[x.id];
-                if (__goodies.devs.contains(x.id)) x.flags += x.flags & 4096 ? 0 : 4096;
+                if (endpwn.customizer.data.bots.contains(x.id)) x.bot = true;
+                if (endpwn.customizer.data.users[x.id] !== undefined) x.discriminator = endpwn.customizer.data.users[x.id];
+                if (endpwn.customizer.data.devs.contains(x.id)) x.flags += x.flags & 4096 ? 0 : 4096;
 
                 return x;
             }
         );
 
         // make sure devs' badges actually render
-        $api.events.hook('USER_PROFILE_MODAL_FETCH_SUCCESS', x => { if (__goodies.devs.contains(x.user.id)) x.user.flags += x.user.flags & 4096 ? 0 : 4096; })
+        $api.events.hook('USER_PROFILE_MODAL_FETCH_SUCCESS', x => { if (endpwn.customizer.data.devs.contains(x.user.id)) x.user.flags += x.user.flags & 4096 ? 0 : 4096; })
 
         // hook getGuild() so we can verify servers
         $api.util.wrapAfter(
@@ -175,7 +183,7 @@ exports = {
 
                 if (x === undefined || x === null) return;
 
-                if (__goodies.guilds.contains(x.id)) x.features.add('VERIFIED');
+                if (endpwn.customizer.data.guilds.contains(x.id)) x.features.add('VERIFIED');
 
                 return x;
             }
@@ -185,7 +193,7 @@ exports = {
         if ($api.lite || !fs.existsSync($api.data + '/DONTUPDATE'))
             (function () {
 
-                __epprint('checking for EPAPI updates...');
+                internal.print('checking for EPAPI updates...');
 
                 // fetch the latest build of epapi
                 fetch('https://endpwn.github.io/epapi/epapi.js?_=' + Date.now()).then(x => x.text()).then(x => {

@@ -135,7 +135,7 @@ exports = {
             var data = l.split(';;');
             window.endpwn.changelog = {
                 date: data[0],
-                body: data[1] + '\n\n' + log.changeLog.body
+                body: data[1]
             };
         });
 

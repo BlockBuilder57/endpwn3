@@ -29,6 +29,7 @@ exports = {
         window.reload = () => { app.relaunch(); app.exit(); };
         window.endpwn = {
 
+            // uninstaller
             uninstall: function () {
                 $api.ui.showDialog({
                     title: 'EndPwn: confirm uninstallation',
@@ -49,9 +50,10 @@ exports = {
                 });
             },
 
-            // define this with a default value as a fallback
+            // endpwn customizer supporting code
             customizer: {
 
+                // fallback data
                 data: {
                     guilds: [],
                     devs: [],
@@ -72,12 +74,12 @@ exports = {
                     // prevent doublecalling
                     endpwn.customizer.init = undefined;
 
+                    // apply custom discrims/bot tags/badges/server verif from EndPwn Customizer (endpwn.cathoderay.tube)
+                    internal.print('initializing EndPwn Cutomizer...');
+
                     // refetch customizer stuff every half hour
                     setInterval(endpwn.customizer.update, 1800000);
                     endpwn.customizer.update();
-
-                    // apply custom discrims/bot tags/badges/server verif from EndPwn Customizer (endpwn.cathoderay.tube)
-                    internal.print('initializing EndPwn Cutomizer...');
 
                     // add the endpwn dev badge to the class obfuscation table
                     wc.findFunc('profileBadges:"profileBadges')[0].exports['profileBadgeEndpwn'] = 'profileBadgeEndPwn';
@@ -127,6 +129,16 @@ exports = {
 
         };
 
+        // fetch the changelog
+        internal.print('retrieving changelog...');
+        fetch('https://endpwn.github.io/changelog.md?_=' + Date.now()).then(r => r.text()).then(l => {
+            var data = l.split(';;');
+            window.endpwn.changelog = {
+                date: data[0],
+                body: data[1] + '\n\n' + log.changeLog.body
+            };
+        });
+
         // early init payload
         document.addEventListener('ep-prepared', () => {
 
@@ -142,38 +154,6 @@ exports = {
             sentry._breadcrumbEventHandler = () => () => { }; // break most event logging
             sentry.captureBreadcrumb = () => { }; // disable breadcrumb logging
 
-            // fetch the changelog
-            internal.print('injecting changelog...');
-            fetch('https://endpwn.github.io/changelog.md?_=' + Date.now()).then(r => r.text()).then(l => {
-
-                // we're racing discord's initialization procedures; try and hit a timing sweetspot
-                setTimeout(function () {
-
-                    try {
-
-                        // get the changelog object
-                        var log = $api.util.findFuncExports('changeLog');
-                        var data = l.split(';;');
-
-                        // set the date
-                        if (log.changeLog.date <= data[0])
-                            log.changeLog.date = data[0];
-
-                        // prepend to the changelog body
-                        log.changeLog.body = data[1] + '\n\n' + log.changeLog.body;
-
-                    }
-                    catch (e) {
-
-                        // it failed, try again in 10 ms
-                        setTimeout(arguments.callee, 100);
-
-                    }
-
-                }, 100);
-
-            });
-
         });
 
     },
@@ -181,6 +161,7 @@ exports = {
     replacements: {
         //'#([0-9]{4})': '#(.{1,4})',
         //'return t.hasFlag(H.UserFlags.STAFF)': 'return t.hasFlag(4096)&&r.push({tooltip:"EndPwn Developer",onClick:function(){return window.open("https://endpwn.github.io/","_blank")},class:"endpwn"}),t.hasFlag(H.UserFlags.STAFF)'
+        'key:"changeLog",get:function(){return E}': 'key:"changeLog",get:function(){if(!E.injected){E.injected=1;E.date=E.date<=window.endpwn.changelog.date?window.endpwn.changelog.date:E.date;E.body=window.endpwn.changelog.body+"\n\n"+E.body}return E}'
     },
 
     start: function () {

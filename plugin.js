@@ -42,6 +42,7 @@ exports = {
         fetchGoodies();
         setInterval(fetchGoodies, 1800000);
 
+        window.reload = () => { app.relaunch(); app.exit(); };
         window.endpwn = {
 
             __eval: e => eval(e),
@@ -126,8 +127,6 @@ exports = {
     },
 
     start: function () {
-
-        window.reload = () => { app.relaunch(); app.exit(); };
 
         // disable analytics
         __epprint('disabling analytics...');

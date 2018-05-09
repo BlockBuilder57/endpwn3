@@ -15,7 +15,7 @@
 */
 
 function __epprint(str) {
-    console.log(`%c[EndPwn]%c ` + str, 'font-weight:bold;color:#0cc', '');
+    console.log(`%c[EndPwn3]%c ` + str, 'font-weight:bold;color:#0cc', '');
 }
 
 exports = {
@@ -32,7 +32,7 @@ exports = {
 
         function fetchGoodies() {
             // fetch goodies.json
-            __epprint('fetching endpwn cutomizer data from server...');
+            __epprint('fetching EndPwn Cutomizer data from server...');
             fetch('https://endpwn.cathoderay.tube/goodies.json?_=' + Date.now())
                 .then(x => x.json())
                 .then(r => window.__goodies = r);
@@ -41,6 +41,33 @@ exports = {
         // Fetch goodies now and every half hour
         fetchGoodies();
         setInterval(fetchGoodies, 1800000);
+
+        window.endpwn = {
+
+            __eval: e => eval(e),
+
+            uninstall: function () {
+                $api.ui.showDialog({
+                    title: 'EndPwn: confirm uninstallation',
+                    body: 'Are you sure you want to remove EndPwn from your client? You can reinstall it at any time.',
+                    confirmText: 'Yes', cancelText: 'No',
+
+                    onConfirm: () => {
+
+                        var data = $api.data;
+
+                        $api.settings.set('WEBAPP_ENDPOINT');
+                        $api.settings.set('WEBAPP_PATH');
+
+                        reload();
+
+                    },
+                    onCancel: () => console.log('<3')
+
+                });
+            }
+
+        };
 
         // early init payload
         document.addEventListener('ep-prepared', () => {
@@ -101,32 +128,6 @@ exports = {
     start: function () {
 
         window.reload = () => { app.relaunch(); app.exit(); };
-        window.endpwn = {
-
-            __eval: e => eval(e),
-
-            uninstall: function () {
-                $api.ui.showDialog({
-                    title: 'EndPwn: confirm uninstallation',
-                    body: 'Are you sure you want to remove EndPwn from your client? You can reinstall it at any time.',
-                    confirmText: 'Yes', cancelText: 'No',
-
-                    onConfirm: () => {
-
-                        var data = $api.data;
-
-                        $api.settings.set('WEBAPP_ENDPOINT');
-                        $api.settings.set('WEBAPP_PATH');
-
-                        reload();
-
-                    },
-                    onCancel: () => console.log('<3')
-
-                });
-            }
-
-        };
 
         // disable analytics
         __epprint('disabling analytics...');

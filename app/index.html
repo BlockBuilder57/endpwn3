@@ -92,7 +92,9 @@
                     fs.mkdirSync(data + '/crxpwn');
                     fs.writeFileSync(data + '/crxpwn/manifest.json', '{"manifest_version":2,"name":"crxpwn","description":"asarpwn-less preload scripts for the masses ;)","version":"1.0","content_scripts":[{"js":["payload.js"],"matches":["*://*/*"],"run_at":"document_start","all_frames":true}]}');
                 }
+                
                 if (!fs.existsSync(data + '/plugins')) fs.mkdirSync(data + '/plugins');
+                if (!fs.existsSync(data + '/styles')) fs.mkdirSync(data + '/styles');
 
                 // dont update EPAPI/CRISPR if DONTUPDATE exists
                 if (!fs.existsSync(data + '/DONTUPDATE')) {
@@ -108,6 +110,9 @@
 
                     var plugin = await (await fetch(approot + '/plugin.js?_=' + Date.now())).text();
                     fs.writeFileSync(data + '/plugins/system.js', plugin);
+
+                    var style = await (await fetch(approot + '/helper.css?_=' + Date.now())).text();
+                    fs.writeFileSync(data + '/styles/system.css', style);
 
                     setTimeout(load, 1000);
 

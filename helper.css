@@ -1,0 +1,13 @@
+.profileBadgeEndPwn{
+    background-image:url(https://dr1ft.xyz/sigma_solid.svg);
+    background-position:center;
+    background-repeat:no-repeat;
+    width:16px;
+    height:16px;
+    cursor:pointer
+}
+
+[class*="text-"] [class*="note"] {
+    line-height:normal!important;
+    text-align:left!important
+}

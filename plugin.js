@@ -84,12 +84,6 @@ exports = {
                     // add the endpwn dev badge to the class obfuscation table
                     wc.findFunc('profileBadges:"profileBadges')[0].exports['profileBadgeEndpwn'] = 'profileBadgeEndPwn';
 
-                    // apply the css for endpwn dev badges
-                    var badgecss = document.createElement("style");
-                    badgecss.type = "text/css";
-                    badgecss.innerHTML = ".profileBadgeEndPwn{background-image:url(https://dr1ft.xyz/sigma_solid.svg);background-position:center;background-repeat:no-repeat;width:16px;height:16px;cursor:pointer}";
-                    document.body.appendChild(badgecss);
-
                     // hook getUser() so we can apply custom discrims/bot tags/badges
                     $api.util.wrapAfter(
                         "wc.findCache('getUser')[0].exports.getUser",
@@ -159,9 +153,23 @@ exports = {
     },
 
     replacements: {
-        //'#([0-9]{4})': '#(.{1,4})',
-        //'return t.hasFlag(H.UserFlags.STAFF)': 'return t.hasFlag(4096)&&r.push({tooltip:"EndPwn Developer",onClick:function(){return window.open("https://endpwn.github.io/","_blank")},class:"endpwn"}),t.hasFlag(H.UserFlags.STAFF)'
-        'key:"changeLog",get:function(){return E}': 'key:"changeLog",get:function(){if(!E.injected){E.injected=1;E.date=E.date<=window.endpwn.changelog.date?window.endpwn.changelog.date:E.date;E.body=window.endpwn.changelog.body+"\\n\\n"+E.body}return E}'
+
+        // fix for custom discrims breaking search
+        //'#([0-9]{4})': 
+            //'#(.{1,4})',
+
+        // endpwn dev badges
+        //'return t.hasFlag(H.UserFlags.STAFF)': 
+            //'return t.hasFlag(4096)&&r.push({tooltip:"EndPwn Developer",onClick:function(){return window.open("https://endpwn.github.io/","_blank")},class:"endpwn"}),t.hasFlag(H.UserFlags.STAFF)'
+
+        // changelog injection
+        'key:"changeLog",get:function(){return E}':
+            'key:"changeLog",get:function(){if(!E.injected){E.injected=1;E.date=E.date<=window.endpwn.changelog.date?window.endpwn.changelog.date:E.date;E.body=window.endpwn.changelog.body+"\\n\\n"+E.body}return E}',
+            
+        // crash screen hijack
+        'var e=o("div",{},void 0,o("p",{},void 0,a.default.Messages.ERRORS_UNEXPECTED_CRASH),o("p",{},void 0,a.default.Messages.ERRORS_ACTION_TO_TAKE)),t=o(c.default,{size:l.ButtonSizes.LARGE,onClick:this._handleSubmitReport},void 0,a.default.Messages.ERRORS_RELOAD);return o(u.default,{theme:this.props.theme,title:a.default.Messages.UNSUPPORTED_BROWSER_TITLE,':
+            `var e=o("div",{},void 0,o("p",{},void 0,"Something has gone very, very wrong, and Discord has crashed."),o("p",{},void 0,"If this is the first time you've seen this error screen, reload and hope for the best. If this screen appears again, follow these steps:"),o("p",{},void 0,"Try removing any new plugins and restarting again. If this solves the problem there may be a bug in a plugin or a conflict."),o("p",{},void 0,"If problems continue, it's likely that there is a bug in EndPwn or Discord."),o("p",{},void 0,"If you need help, join the EndPwn Discord server (https://discord.gg/wXdPNf2)"),o("p",{},void 0,"Details may be available in the console (Ctrl+Shift+I), but at this level of crash we can't be certain.")),t=o("div",{},void 0,o(c.default,{size:l.ButtonSizes.LARGE,onClick:()=>window.electron.getCurrentWindow().reload()},void 0,"Reload"),o(c.default,{size:l.ButtonSizes.LARGE,onClick:()=>{window.$api.localStorage.set('safemode',1);window.electron.getCurrentWindow().reload()}},void 0,"Reload in safe mode"));return o(u.default,{theme:this.props.theme,title:"Discord: Fatal Error",`
+
     },
 
     start: function () {

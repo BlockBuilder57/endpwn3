@@ -14,6 +14,7 @@
 
 */
 
+/* style declaration for EndPwn developer badge */
 .profileBadgeEndPwn {
     background-image: url(https://dr1ft.xyz/sigma_solid.svg);
     background-position: center;
@@ -23,6 +24,7 @@
     cursor: pointer
 }
 
+/* fix for poor formatting on modified crash screen */
 [class*="text-"] [class*="note"] {
     line-height: normal !important;
     text-align: left !important

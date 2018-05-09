@@ -161,7 +161,7 @@ exports = {
     replacements: {
         //'#([0-9]{4})': '#(.{1,4})',
         //'return t.hasFlag(H.UserFlags.STAFF)': 'return t.hasFlag(4096)&&r.push({tooltip:"EndPwn Developer",onClick:function(){return window.open("https://endpwn.github.io/","_blank")},class:"endpwn"}),t.hasFlag(H.UserFlags.STAFF)'
-        'key:"changeLog",get:function(){return E}': 'key:"changeLog",get:function(){if(!E.injected){E.injected=1;E.date=E.date<=window.endpwn.changelog.date?window.endpwn.changelog.date:E.date;E.body=window.endpwn.changelog.body+"\n\n"+E.body}return E}'
+        'key:"changeLog",get:function(){return E}': 'key:"changeLog",get:function(){if(!E.injected){E.injected=1;E.date=E.date<=window.endpwn.changelog.date?window.endpwn.changelog.date:E.date;E.body=window.endpwn.changelog.body+"\\n\\n"+E.body}return E}'
     },
 
     start: function () {

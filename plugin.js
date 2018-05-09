@@ -63,7 +63,7 @@ exports = {
 
                 update: function () {
                     // fetch goodies.json
-                    internal.print('fetching EndPwn Cutomizer data from server...');
+                    internal.print('fetching EndPwn Customizer data from server...');
                     fetch('https://endpwn.cathoderay.tube/goodies.json?_=' + Date.now())
                         .then(x => x.json())
                         .then(r => endpwn.customizer.data = r);
@@ -75,7 +75,7 @@ exports = {
                     endpwn.customizer.init = undefined;
 
                     // apply custom discrims/bot tags/badges/server verif from EndPwn Customizer (endpwn.cathoderay.tube)
-                    internal.print('initializing EndPwn Cutomizer...');
+                    internal.print('initializing EndPwn Customizer...');
 
                     // refetch customizer stuff every half hour
                     setInterval(endpwn.customizer.update, 1800000);

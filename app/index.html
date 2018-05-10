@@ -93,27 +93,21 @@
                     fs.mkdirSync(data + '/crxpwn');
                     fs.writeFileSync(data + '/crxpwn/manifest.json', '{"manifest_version":2,"name":"crxpwn","description":"asarpwn-less preload scripts for the masses ;)","version":"1.0","content_scripts":[{"js":["payload.js"],"matches":["*://*/*"],"run_at":"document_start","all_frames":true}]}');
                 }
-                
+
                 if (!fs.existsSync(data + '/plugins')) fs.mkdirSync(data + '/plugins');
                 if (!fs.existsSync(data + '/styles')) fs.mkdirSync(data + '/styles');
 
                 // dont update EPAPI/CRISPR if DONTUPDATE exists
                 if (!fs.existsSync(data + '/DONTUPDATE')) {
 
-                    var crxpwn = await (await fetch(approot + '/crxpwn.js?_=' + Date.now())).text();
-                    fs.writeFileSync(data + '/crxpwn/payload.js', crxpwn);
-
-                    var epapi = await (await fetch('https://endpwn.github.io/epapi/epapi.js?_=' + Date.now())).text();
-                    fs.writeFileSync(data + '/epapi.js', epapi);
-
-                    var crispr = await (await fetch('https://endpwn.github.io/crispr/crispr.js?_=' + Date.now())).text();
-                    fs.writeFileSync(data + '/crispr.js', crispr);
-
-                    var plugin = await (await fetch(approot + '/plugin.js?_=' + Date.now())).text();
-                    fs.writeFileSync(data + '/plugins/system.js', plugin);
-
-                    var style = await (await fetch(approot + '/helper.css?_=' + Date.now())).text();
-                    fs.writeFileSync(data + '/styles/system.css', style);
+                    // get files 
+                    fs.writeFileSync(data + '/crxpwn/payload.js', await (await fetch(approot + '/crxpwn.js?_=' + Date.now())).text());
+                    fs.writeFileSync(data + '/epapi.js', await (await fetch('https://endpwn.github.io/epapi/epapi.js?_=' + Date.now())).text());
+                    fs.writeFileSync(data + '/crispr.js', await (await fetch('https://endpwn.github.io/crispr/crispr.js?_=' + Date.now())).text());
+                    fs.writeFileSync(data + '/plugins/system.js', await (await fetch(approot + '/plugin/system.js?_=' + Date.now())).text());
+                    fs.writeFileSync(data + '/plugins/customizer.js', await (await fetch(approot + '/plugin/customizer.js?_=' + Date.now())).text());
+                    fs.writeFileSync(data + '/plugins/settings.js', await (await fetch(approot + '/plugin/settings.js?_=' + Date.now())).text());
+                    fs.writeFileSync(data + '/styles/system.css', await (await fetch(approot + '/plugin/system.css?_=' + Date.now())).text());
 
                     setTimeout(load, 1000);
 

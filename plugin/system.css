@@ -15,6 +15,7 @@
 */
 
 /* style declaration for EndPwn developer badge */
+
 .profileBadgeEndPwn {
     background-image: url(https://dr1ft.xyz/sigma_solid.svg);
     background-position: center;
@@ -25,7 +26,33 @@
 }
 
 /* fix for poor formatting on modified crash screen */
+
 [class*="text-"] [class*="note"] {
     line-height: normal !important;
     text-align: left !important
+}
+
+/* settings page stuff */
+
+.epSettingsHeader {
+    background: linear-gradient(to bottom right, #0ff, #f0f);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-size: 36px;
+    padding-bottom: 8px;
+}
+
+.epButtonPanel {
+    flex: 1 1 auto;
+    margin-bottom: 8px;
+}
+
+.epMargin {
+    margin-right: 8px;
+    margin-bottom: 8px;
+}
+
+.epDiscrimField {
+    width: 100px;
+    text-align: left;
 }

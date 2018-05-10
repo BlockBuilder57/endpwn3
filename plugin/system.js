@@ -1,6 +1,6 @@
 /*
 
-    EndPwn3 System (script component)
+    EndPwn3 System (bootstrap)
     
     Copyright 2018 EndPwn Project
     
@@ -29,6 +29,22 @@ exports = {
         window.reload = () => { app.relaunch(); app.exit(); };
         window.endpwn = {
 
+            // safemode
+            safemode: function () {
+                $api.ui.showDialog({
+                    title: 'EndPwn: safe mode',
+                    body: 'This will restart your client in a state without plugin support.',
+                    confirmText: 'Yes', cancelText: 'No',
+
+                    onConfirm: () => {
+
+                        $api.localStorage.set('safemode', 1);
+                        window.electron.getCurrentWindow().reload();
+
+                    }
+                });
+            },
+
             // uninstaller
             uninstall: function () {
                 $api.ui.showDialog({
@@ -45,81 +61,27 @@ exports = {
 
                         reload();
 
-                    },
-                    onCancel: () => console.log('<3')
+                    }
                 });
             },
 
-            // endpwn customizer supporting code
-            customizer: {
+            // endpwn customizer
+            customizer: krequire('customizer'),
 
-                // fallback data
-                data: {
-                    guilds: [],
-                    devs: [],
-                    bots: [],
-                    users: {}
-                },
+            // settings page stuff
+            settings: krequire('settings'),
 
-                update: function () {
-                    // fetch goodies.json
-                    internal.print('fetching EndPwn Customizer data from server...');
-                    fetch('https://endpwn.cathoderay.tube/goodies.json?_=' + Date.now())
-                        .then(x => x.json())
-                        .then(r => endpwn.customizer.data = r);
-                },
+            // wrapper function for dispatch()
+            // intended to simplify using executeJavaScript() from other windows as a bad IPC method
+            // we do this since afaik we cant use electron.ipc in a useful way (maybe im wrong? if i am ill make this better later on lol)
+            pseudoipc: function (e) {
+                $api.events.dispatch({
+                    type: 'ENDPWN_PSEUDO_IPC',
+                    data: e
+                });
+            },
 
-                init: function () {
-
-                    // prevent doublecalling
-                    endpwn.customizer.init = undefined;
-
-                    // apply custom discrims/bot tags/badges/server verif from EndPwn Customizer (endpwn.cathoderay.tube)
-                    internal.print('initializing EndPwn Customizer...');
-
-                    // refetch customizer stuff every half hour
-                    setInterval(endpwn.customizer.update, 1800000);
-                    endpwn.customizer.update();
-
-                    // add the endpwn dev badge to the class obfuscation table
-                    wc.findFunc('profileBadges:"profileBadges')[0].exports['profileBadgeEndpwn'] = 'profileBadgeEndPwn';
-
-                    // hook getUser() so we can apply custom discrims/bot tags/badges
-                    $api.util.wrapAfter(
-                        "wc.findCache('getUser')[0].exports.getUser",
-
-                        x => {
-
-                            if (x === undefined || x === null) return;
-
-                            if (endpwn.customizer.data.bots.contains(x.id)) x.bot = true;
-                            if (endpwn.customizer.data.users[x.id] !== undefined) x.discriminator = endpwn.customizer.data.users[x.id];
-                            if (endpwn.customizer.data.devs.contains(x.id)) x.flags += x.flags & 4096 ? 0 : 4096;
-
-                            return x;
-                        }
-                    );
-
-                    // make sure devs' badges actually render
-                    $api.events.hook('USER_PROFILE_MODAL_FETCH_SUCCESS', x => { if (endpwn.customizer.data.devs.contains(x.user.id)) x.user.flags += x.user.flags & 4096 ? 0 : 4096; })
-
-                    // hook getGuild() so we can verify servers
-                    $api.util.wrapAfter(
-                        "wc.findCache('getGuild')[0].exports.getGuild",
-
-                        x => {
-
-                            if (x === undefined || x === null) return;
-
-                            if (endpwn.customizer.data.guilds.contains(x.id)) x.features.add('VERIFIED');
-
-                            return x;
-                        }
-                    );
-
-                }
-
-            }
+            __eval: e => eval(e)
 
         };
 
@@ -154,18 +116,10 @@ exports = {
 
     replacements: {
 
-        // fix for custom discrims breaking search
-        //'#([0-9]{4})': 
-            //'#(.{1,4})',
-
-        // endpwn dev badges
-        //'return t.hasFlag(H.UserFlags.STAFF)': 
-            //'return t.hasFlag(4096)&&r.push({tooltip:"EndPwn Developer",onClick:function(){return window.open("https://endpwn.github.io/","_blank")},class:"endpwn"}),t.hasFlag(H.UserFlags.STAFF)'
-
         // changelog injection
         'key:"changeLog",get:function(){return E}':
             'key:"changeLog",get:function(){if(!E.injected){E.injected=1;E.date=E.date<=window.endpwn.changelog.date?window.endpwn.changelog.date:E.date;E.body=window.endpwn.changelog.body+"\\n\\n"+E.body}return E}',
-            
+
         // crash screen hijack
         'var e=o("div",{},void 0,o("p",{},void 0,a.default.Messages.ERRORS_UNEXPECTED_CRASH),o("p",{},void 0,a.default.Messages.ERRORS_ACTION_TO_TAKE)),t=o(c.default,{size:l.ButtonSizes.LARGE,onClick:this._handleSubmitReport},void 0,a.default.Messages.ERRORS_RELOAD);return o(u.default,{theme:this.props.theme,title:a.default.Messages.UNSUPPORTED_BROWSER_TITLE,':
             `var e=o("div",{},void 0,o("p",{},void 0,"Something has gone very, very wrong, and Discord has crashed."),o("p",{},void 0,"If this is the first time you've seen this error screen, reload and hope for the best. If this screen appears again, follow these steps:"),o("p",{},void 0,"Try removing any new plugins and restarting again. If this solves the problem there may be a bug in a plugin or a conflict."),o("p",{},void 0,"If problems continue, it's likely that there is a bug in EndPwn or Discord."),o("p",{},void 0,"If you need help, join the EndPwn Discord server (https://discord.gg/wXdPNf2)"),o("p",{},void 0,"Details may be available in the console (Ctrl+Shift+I), but at this level of crash we can't be certain.")),t=o("div",{},void 0,o(c.default,{size:l.ButtonSizes.LARGE,onClick:()=>window.electron.getCurrentWindow().reload()},void 0,"Reload"),o(c.default,{size:l.ButtonSizes.LARGE,onClick:()=>{window.$api.localStorage.set('safemode',1);window.electron.getCurrentWindow().reload()}},void 0,"Reload in safe mode"));return o(u.default,{theme:this.props.theme,title:"Discord: Fatal Error",`
@@ -182,7 +136,9 @@ exports = {
         internal.print('enabling experiments menu...');
         $api.util.findFuncExports('isDeveloper').__defineGetter__('isDeveloper', () => true);
 
+        // if we used start() in the other files, it would create a different instance -- we dont want that
         endpwn.customizer.init();
+        endpwn.settings.init();
 
         // check for epapi updates
         if ($api.lite || !fs.existsSync($api.data + '/DONTUPDATE'))
@@ -231,3 +187,10 @@ exports = {
     }
 
 }
+
+/*
+    Now all this crazy drama
+    All up in my face
+    All I really wanted
+    Was to be alone in space
+*/

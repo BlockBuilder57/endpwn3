@@ -172,6 +172,8 @@
                     electron.getCurrentWindow().loadURL('https://' + (branch && branch != 'development' ? branch + '.' : '') + 'discordapp.com/channels/@me');
                 }
 
+                throw 'test';
+
                 if (window.BdApi) {
                     alert('EndPwn3 is not compatible with BetterDiscord\n\nPress OK to return to Discord', 'EndPwn3: Framework Conflict');
                     electron.getCurrentWindow().loadURL('https://' + (branch && branch != 'development' ? branch + '.' : '') + 'discordapp.com/channels/@me');

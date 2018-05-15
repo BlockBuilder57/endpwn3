@@ -141,7 +141,7 @@
     <script>
 
         // wait until DOM is ready so that error messages can display properly
-        window.onload = async () => {
+        window.onload = setTimeout(async () => {
 
             setTimeout(() => {
                 init();
@@ -174,7 +174,7 @@
                     electron.getCurrentWindow().loadURL('https://' + (branch && branch != 'development' ? branch + '.' : '') + 'discordapp.com/channels/@me');
                 }
 
-                if (window.BdApi) {
+                if (window.betterDiscordIPC) {
                     alert('EndPwn3 is not compatible with BetterDiscord\n\nPress OK to return to Discord', 'EndPwn3: Framework Conflict');
                     electron.getCurrentWindow().loadURL('https://' + (branch && branch != 'development' ? branch + '.' : '') + 'discordapp.com/channels/@me');
                     return;
@@ -259,7 +259,7 @@
                 document.querySelector('div').parentNode.innerHTML += '<span>Inititialization failure. Check the console for details.</span>';
             }
 
-        };
+        }, 500);
 
     </script>
 

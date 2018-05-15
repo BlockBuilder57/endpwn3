@@ -163,15 +163,17 @@
                     electron.getCurrentWindow().loadURL('https://' + (branch && branch != 'development' ? branch + '.' : '') + 'discordapp.com/channels/@me');
                 }
 
-                if (window.betterDiscordIPC) {
+                if (window.BdApi) {
                     alert('EndPwn3 is not compatible with BetterDiscord\n\nPress OK to return to Discord', 'EndPwn3: Framework Conflict');
-                    load();
+                    electron.getCurrentWindow().loadURL('https://' + (branch && branch != 'development' ? branch + '.' : '') + 'discordapp.com/channels/@me');
+                    return;
                 }
 
                 // temporary
                 if (branch != 'canary') {
                     alert('EndPwn3.1 Staging uses crxpwn which only works on Canary at the moment', 'Sorry');
-                    load();
+                    electron.getCurrentWindow().loadURL('https://' + (branch && branch != 'development' ? branch + '.' : '') + 'discordapp.com/channels/@me');
+                    return;
                 }
 
                 // asarpwn (as a removal tool)

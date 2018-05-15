@@ -33,6 +33,8 @@ function evaluate(str, exportsR) {
     if (location.hostname.indexOf('discordapp') == -1) return;
     __crxprint('extension loaded successfully, loading CRISPR and EPAPI...');
 
+    window.BetterDiscord = 'this is a dummy value to trip hasSuspiciousCode()';
+
     // use the discord native api to require electron and get electron.remote
     var electron = DiscordNative.nativeModules.requireModule('discord_/../electron').remote;
     var fs = electron.require('original-fs');

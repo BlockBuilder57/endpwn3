@@ -292,6 +292,7 @@ exports = {
         }
 
         $api.events.hook("USER_SETTINGS_MODAL_SET_SECTION", renderSettings);
+        $api.events.hook("USER_SETTINGS_MODAL_INIT",e=>setTimeout(_=>renderSettings(e),200));
     }
 
 }

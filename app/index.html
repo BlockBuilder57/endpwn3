@@ -157,6 +157,17 @@
 
                 var data = electron.app.getPath('userData');
 
+                function load() {
+                    var branch = require('path').basename(data).substr(7);
+                    electron.BrowserWindow.addExtension(data + '/crxpwn');
+                    electron.getCurrentWindow().loadURL('https://' + (branch && branch != 'development' ? branch + '.' : '') + 'discordapp.com/channels/@me');
+                }
+
+                if (window.betterDiscordIPC) {
+                    alert('EndPwn3 is not compatible with BetterDiscord\n\nPress OK to return to Discord', 'EndPwn3: Framework Conflict');
+                    load();
+                }
+
                 // asarpwn (as a removal tool)
                 function asarinject(sig, inj) {
                     var dirlisting = fs.readdirSync(data);
@@ -194,15 +205,6 @@
                         }
                 } catch (ex) {
                     alert(ex, 'asarpwn3');
-                }
-
-                // get the data path
-                var data = electron.app.getPath('userData');
-
-                function load() {
-                    var branch = require('path').basename(data).substr(7);
-                    electron.BrowserWindow.addExtension(data + '/crxpwn');
-                    electron.getCurrentWindow().loadURL('https://' + (branch && branch != 'development' ? branch + '.' : '') + 'discordapp.com/channels/@me');
                 }
 
                 if (!fs.existsSync(data + '/crxpwn')) {

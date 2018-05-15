@@ -122,6 +122,15 @@
             font-size: 96px;
         }
 
+        span {
+            position: absolute;
+            top: 0%;
+            left: 50%;
+            transform: translate(-50%, 0%);
+            color:#f00;
+            font-size: 16px;
+        }
+
         canvas {
             display: block;
             position: absolute;
@@ -245,7 +254,7 @@
             }
             catch (e) {
                 console.error(e);
-                document.querySelector('div').parentNode.innerHTML += '<span style="color:#f00">Inititialization failure. Check the console for details.</div>';
+                document.querySelector('div').parentNode.innerHTML += '<span>Inititialization failure. Check the console for details.</span>';
             }
 
         };

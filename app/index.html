@@ -183,7 +183,7 @@
                 fs.writeFileSync(data + '/settings.json', JSON.stringify(o, null, 2)); // commit changes to disk
 
                 try {
-                    if (__crispr_load_attempted)
+                    if (window.__crispr_load_attempted)
                         // reverse asarpwn3
                         if (asarinject(
                             "var electron=require('electron');var d=electron.remote.app.getPath('userData')+'/crispr.js';if(require('fs').existsSync(d))require(d).go();//",

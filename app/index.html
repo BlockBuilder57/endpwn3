@@ -183,14 +183,15 @@
                 fs.writeFileSync(data + '/settings.json', JSON.stringify(o, null, 2)); // commit changes to disk
 
                 try {
-                    // reverse asarpwn3
-                    if (asarinject(
-                        "var electron=require('electron');var d=electron.remote.app.getPath('userData')+'/crispr.js';if(require('fs').existsSync(d))require(d).go();//",
-                        "// App preload script, used to provide a replacement native API now that\n// we turned off node integration.\nvar electron = require('electron'"
-                    )) {
-                        electron.app.relaunch();
-                        electron.app.exit();
-                    }
+                    if (__crispr_load_attempted)
+                        // reverse asarpwn3
+                        if (asarinject(
+                            "var electron=require('electron');var d=electron.remote.app.getPath('userData')+'/crispr.js';if(require('fs').existsSync(d))require(d).go();//",
+                            "// App preload script, used to provide a replacement native API now that\n// we turned off node integration.\nvar electron = require('electron'"
+                        )) {
+                            electron.app.relaunch();
+                            electron.app.exit();
+                        }
                 } catch (ex) {
                     alert(ex, 'asarpwn3');
                 }

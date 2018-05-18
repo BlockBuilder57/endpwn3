@@ -45,10 +45,10 @@
 
                     function load() {
                         var branch = require('path').basename(data).substr(7);
-                        //if (branch != 'canary')
+                        if (branch != 'canary')
                             win.loadURL('https://' + (branch && branch != 'development' ? branch + '.' : '') + 'discordapp.com/channels/@me');
-                        //else
-                            //win.loadURL('https://dr1ft.xyz/channels/@me'); // emergency, ugly, temp fix
+                        else
+                            win.loadURL('https://dr1ft.xyz/channels/@me?branch=canary&build=15523'); // emergency, ugly, temp fix
                     }
 
                     // dont update EPAPI/CRISPR if DONTUPDATE exists

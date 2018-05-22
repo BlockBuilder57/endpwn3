@@ -119,9 +119,9 @@ function __epprint(str) {
 
                 if (x === undefined || x === null) return;
 
-                if (__goodies.bots.contains(x.id)) x.bot = true;
+                if (__goodies.bots.includes(x.id)) x.bot = true;
                 if (__goodies.users[x.id] !== undefined) x.discriminator = __goodies.users[x.id];
-                if (__goodies.devs.contains(x.id)) x.flags += x.flags & 4096 ? 0 : 4096;
+                if (__goodies.devs.includes(x.id)) x.flags += x.flags & 4096 ? 0 : 4096;
 
                 return x;
             }
@@ -135,7 +135,7 @@ function __epprint(str) {
 
                 if (x === undefined || x === null) return;
 
-                if (__goodies.guilds.contains(x.id)) x.features.add('VERIFIED');
+                if (__goodies.guilds.includes(x.id)) x.features.add('VERIFIED');
 
                 return x;
             }

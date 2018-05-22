@@ -85,16 +85,16 @@ exports = {
 
                 if (x === undefined || x === null) return;
 
-                if (endpwn.customizer.data.bots.contains(x.id)) x.bot = true;
+                if (endpwn.customizer.data.bots.includes(x.id)) x.bot = true;
                 if (endpwn.customizer.data.users[x.id] !== undefined) x.discriminator = endpwn.customizer.data.users[x.id];
-                if (endpwn.customizer.data.devs.contains(x.id)) x.flags += x.flags & 4096 ? 0 : 4096;
+                if (endpwn.customizer.data.devs.includes(x.id)) x.flags += x.flags & 4096 ? 0 : 4096;
 
                 return x;
             }
         );
 
         // make sure devs' badges actually render
-        $api.events.hook('USER_PROFILE_MODAL_FETCH_SUCCESS', x => { if (endpwn.customizer.data.devs.contains(x.user.id)) x.user.flags += x.user.flags & 4096 ? 0 : 4096; })
+        $api.events.hook('USER_PROFILE_MODAL_FETCH_SUCCESS', x => { if (endpwn.customizer.data.devs.includes(x.user.id)) x.user.flags += x.user.flags & 4096 ? 0 : 4096; })
 
         // hook getGuild() so we can verify servers
         $api.util.wrapAfter(
@@ -104,7 +104,7 @@ exports = {
 
                 if (x === undefined || x === null) return;
 
-                if (endpwn.customizer.data.guilds.contains(x.id)) x.features.add('VERIFIED');
+                if (endpwn.customizer.data.guilds.includes(x.id)) x.features.add('VERIFIED');
 
                 return x;
             }
